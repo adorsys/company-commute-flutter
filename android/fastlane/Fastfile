@@ -1,0 +1,53 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Prevent Fastlane from overwriting README.md
+skip_docs
+
+default_platform(:android)
+
+ProjectName = 'Company Commute'
+
+ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+
+platform :android do
+  desc "Build debug"
+  lane :build_debug do |options|
+
+    notifyslack = options[:notifyslack]
+
+    # Go back to project directory  to use flutter specific commands
+    sh "cd ../../ && flutter clean"
+    sh "cd ../../ && flutter build apk"
+
+    if is_ci? && ENV['SLACK_URL'] && notifyslack == true
+      slack(
+        message: "🎉  Successfully built Flutter-android app (#{ProjectName})",
+        success: true,
+        default_payloads: [:lane, :git_author],
+        channel: '#csi-builds'
+      )
+    end
+  end
+
+  error do |lane, exception, options|
+    notifyslack = options[:notifyslack]
+    if is_ci? && ENV['SLACK_URL'] && notifyslack == true
+      slack(
+        message: "😱  Build failed: *#{ProjectName}*\nException:#{exception.to_s}",
+        success: false,
+        channel: '#csi-builds',
+        default_payloads: [:lane, :git_author]
+      )
+    end
+  end
+end

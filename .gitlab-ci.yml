@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------
+# android
+# ------------------------------------------------------------------
+
+## -----------------------------------------------------------------
+## Jobs
+## -----------------------------------------------------------------
+
+stages:
+  - Build
+
+build:
+  except:
+    refs:
+      - master
+      - develop
+  tags:
+    - android
+  stage: Build
+  before_script:
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter pub get
+    - cd android
+    - bundle install
+  script:
+    - bundle exec fastlane build_debug notifyslack:false
+
+build_and_notify:
+  only:
+    refs:
+      - master
+      - develop
+  tags:
+    - android
+  stage: Build
+  before_script:
+    - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    - flutter pub get
+    - cd android
+    - bundle install
+  script:
+    - bundle exec fastlane build_debug notifyslack:true
