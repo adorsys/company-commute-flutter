@@ -17,7 +17,7 @@ class Repository implements ServiceInterface {
 
   // For changing between on device data base or real web socket
   // If true the on device data safeing is enabled
-  bool mock = false;
+  bool mock = true;
 
   @override
   void setLatLon(LatLng latLng) {
