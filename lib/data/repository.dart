@@ -38,11 +38,11 @@ class Repository implements ServiceInterface {
   }
 
   @override
-  Stream<LatLng> getFromWS() {
+  Stream<LatLng> getFromStream() {
     if (mock) {
-      return MockService.instance.getFromWS();
+      return MockService.instance.getFromStream();
     } else {
-      return WebSocketService.instance.getFromWS();
+      return WebSocketService.instance.getFromStream();
     }
   }
 }
