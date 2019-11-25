@@ -37,7 +37,7 @@ class _MainMobileScreenState extends State<MainMobileScreen> {
   @override
   void initState() {
     super.initState();
-    Repository.instance.getFromWS().listen((latLon) {
+    Repository.instance.getFromStream().listen((latLon) {
       setState(() {
         drawManeuversFromResult(mainMapKey, latLon);
       });
