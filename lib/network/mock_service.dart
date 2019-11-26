@@ -27,7 +27,7 @@ class MockService implements ServiceInterface {
   }
 
   @override
-  Stream<LatLng> getFromWS() {
+  Stream<LatLng> getFromStream() {
     return joinStreamsLatLng(Stream.fromIterable([LatLng(49, 11)]),
         Stream.fromIterable(_loadedLatLng));
   }
